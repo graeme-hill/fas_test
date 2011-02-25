@@ -1,5 +1,7 @@
 module FasTest
   
+  # Used to discover tests and actually run them.  Normally this class will be
+  # used by the command line client.
   class TestRunner
     
     def initialize(verbose = false)
