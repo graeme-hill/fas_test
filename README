@@ -1,4 +1,4 @@
-Auto-discovers test classes in the working directory and runs they tests with
+Auto-discovers test classes in the working directory and runs the tests with
 basically no boot up time and no configuration.  It doesn't matter how you
 structure your project, instead, simple naming conventions are used:
 
