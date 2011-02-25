@@ -1,0 +1,19 @@
+Auto-discovers test classes in the working directory and runs they tests with
+basically no boot up time and no configuration.  It doesn't matter how you
+structure your project, instead, simple naming conventions are used:
+
+ - All test files should be named *_tests.rb
+ - All test methods should be named test__*
+
+Other things you need to know:
+
+ - All test classes should inherit FasTest::TestClass
+ - Your test class can define "setup" and/or "teardown" methods.  They do what
+   it sounds like they do.
+
+Take a look in the test folder to see an example of how the library is used.
+(fas_test is used to test itself).
+
+To actually run your tests just invoke fastest.rb from a command line. It will
+automatically recursively discover all of your test classes within the working
+directory and run there tests.  
