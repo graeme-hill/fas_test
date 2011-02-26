@@ -14,8 +14,23 @@ module FasTest
     
     def run_tests_in_class(test_class)
       test_instance = init_test_instance(test_class)
-      get_all_test_method_names(test_class).each do |test_method_name|
-        run_test(test_instance, test_method_name)
+      begin
+        setup_failed = false
+        begin
+          test_instance.class_setup
+        rescue Object => ex
+          puts "Superfail: Crashed when running #{test_class.name}::class_setup"
+          puts "  -> #{ex.class.name}: #{ex.message}"
+          pretty_print_stack_trace(ex)
+          setup_failed = true
+        end
+        unless setup_failed
+          get_all_test_method_names(test_class).each do |test_method_name|
+            run_test(test_instance, test_method_name)
+          end
+        end
+      ensure
+        test_instance.class_teardown
       end
     end
     
@@ -32,30 +47,32 @@ module FasTest
     def run_test(test_instance, test_method_name)
       begin
         status = TestStatuses::PASS
-        test_instance.setup
+        setup_succeeded = try_test_setup(test_instance)
         test_instance.needs_teardown = true
-        test_instance.send(test_method_name)
-        if @verbose
-          puts "Pass: #{test_instance.class.name}::#{test_method_name}"
+        if setup_succeeded
+          test_instance.send(test_method_name)
+          if @verbose
+            puts "Pass: #{test_instance.class.name}::#{test_method_name}"
+          end
         end
       rescue AssertionException => ex
         status = TestStatuses::FAIL
-        try_teardown(test_instance)
+        try_test_teardown(test_instance)
         puts "Fail: #{test_instance.class.name}::#{test_method_name}"
         puts "  -> #{ex.message}"
       rescue Exception => ex
         status = TestStatuses::CRASH
-        try_teardown(test_instance)
+        try_test_teardown(test_instance)
         puts "Crash: #{test_instance.class.name}::#{test_method_name}"
         puts "  -> #{ex.class.name}: #{ex.message}"
         pretty_print_stack_trace(ex)
       rescue Object => obj
         status = TestStatuses::CRASH
-        try_teardown(test_instance)
+        try_test_teardown(test_instance)
         puts "Crash: #{test_instance.class.name}::#{test_method_name}"
         puts "  -> Raised non-exception: #{obj.to_s}"
       ensure
-        try_teardown(test_instance)
+        try_test_teardown(test_instance)
         record_test_result(test_instance, test_method_name, status)
       end
     end
@@ -66,10 +83,23 @@ module FasTest
       @test_results[key] = TestResult.new(test_class, test_method_name, status)
     end
     
-    def try_teardown(test_instance)
+    def try_test_setup(test_instance)
+      setup_succeeded = true
+      begin
+        test_instance.test_setup
+      rescue Exception => ex
+        setup_succeeded = false
+        puts "Superfail: #{test_instance.class.name}::test_setup"
+        puts "  -> #{ex.class.name}: #{ex.message}"
+        pretty_print_stack_trace(ex)
+      end
+      return setup_succeeded
+    end
+    
+    def try_test_teardown(test_instance)
       if test_instance.needs_teardown
         begin
-          test_instance.teardown
+          test_instance.test_teardown
         ensure
           test_instance.needs_teardown = false
         end
@@ -127,24 +157,27 @@ module FasTest
     end
 
   end
-  
-  # Types that a ruby constant can refer to
-  class ConstantTypes
-    CLASS = 1
-    MODULE = 2
-    OTHER = 3
-  end
-  
+
   # Base class for all test suites
   class TestClass
     
     attr_writer :runner
     attr_accessor :needs_teardown
     
-    def setup
+    # This is called once before any of the tests in the class are run
+    def class_setup
     end
     
-    def teardown
+    # This is called once after ALL the tests in the class are done
+    def class_teardown
+    end
+    
+    # This is called before EACH test
+    def test_setup
+    end
+    
+    # This is called after EACH test
+    def test_teardown
     end
     
     def assert_true(expression, msg = "<no msg given>")
@@ -166,6 +199,10 @@ module FasTest
     end
     
   end
+
+  # Exception thrown when an assertion in a test fails
+  class AssertionException < Exception
+  end
   
   # Represents the state of a finished test
   class TestResult
@@ -181,16 +218,19 @@ module FasTest
     end
     
   end
-  
-  # Exception thrown when an assertion in a test fails
-  class AssertionException < Exception
+    
+  # ENUM - Types that a ruby constant can refer to
+  class ConstantTypes
+    CLASS = 1
+    MODULE = 2
+    OTHER = 4
   end
-
-  # Enum of test result states
+  
+  # ENUM - Test result states
   class TestStatuses
     PASS = 1
     FAIL = 2
-    CRASH = 3
+    CRASH = 4
   end
   
 end

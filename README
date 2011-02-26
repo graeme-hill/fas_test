@@ -8,8 +8,11 @@ structure your project, instead, simple naming conventions are used:
 Other things you need to know:
 
  - All test classes should inherit FasTest::TestClass
- - Your test class can define "setup" and/or "teardown" methods.  They do what
-   it sounds like they do.
+ - There are two setup and two teardown methods:
+   - class_setup: Called once before any of the tests
+   - class_teardown: Called once after any of the tests
+   - test_setup: Called before each test
+   - test_teardown: Called after each test
 
 Take a look in the test folder to see an example of how the library is used.
 (fas_test is used to test itself).

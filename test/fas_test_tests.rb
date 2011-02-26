@@ -5,14 +5,11 @@ require 'lib/fas_test'
 
 class FasTestTests < FasTest::TestClass
     
-  def setup
+  def class_setup
     $stdout = StringIO.new
-    @db = SQLite3::Database.new ":memory:"
-    @db.execute("CREATE TABLE Foo (id int, foobar varchar(100));")
   end
   
-  def teardown
-    @db.execute("DELETE FROM Foo;")
+  def class_teardown
     $stdout = STDOUT
   end
 
@@ -21,129 +18,6 @@ class FasTestTests < FasTest::TestClass
     puts 'hello?'
     assert_equal "hello?\n", $stdout.string
   end
-  
-  def test__this_is_a_temp_test11
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test10
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test9
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test8
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test7
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test6
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test5
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test4
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test3
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test2
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  def test__this_is_a_temp_test12
-    @db.execute("INSERT INTO Foo VALUES (1, 'qwer')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'asdf')")
-    @db.execute("INSERT INTO Foo VALUES (1, 'zxcv')")
-    rows = @db.execute("SELECT foobar FROM Foo;")
-    
-    assert_equal(3, rows.length)
-    assert_equal('qwer', rows[0][0])
-    assert_equal('asdf', rows[1][0])
-    assert_equal('zxcv', rows[2][0])
-  end
-  
   
   def test__run_tests_in_class__results_are_valid
     runner = FasTest::TestRunner.new
@@ -170,6 +44,7 @@ class FasTestTests < FasTest::TestClass
     assert_equal(
       FasTest::TestStatuses::PASS,
       runner.test_results['FasTestTests::FasTestTestClassTests::test__asert_true_with_true'].status)
+
   end
 
   class FasTestTestClassTests < FasTest::TestClass
