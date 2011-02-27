@@ -185,7 +185,7 @@ module FasTest
     def assert_true(expression, msg = "<no msg given>")
       @runner.increment_assert_count
       if expression != true
-        raise AssertionException, "expected true but got #{expression.to_s}"
+        raise AssertionException, "#{msg} | expected true but got #{expression.to_s}"
       end
     end
     
