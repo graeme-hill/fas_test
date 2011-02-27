@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'fas_test'
+
+test_runner = FasTest::TestRunner.new ARGV.any? { |a| a == "-v" }
+test_runner.run_tests_in_folder(".")
+test_runner.print_summary
