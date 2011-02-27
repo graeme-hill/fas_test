@@ -107,7 +107,9 @@ module FasTest
     end
     
     def pretty_print_stack_trace(exception)
-      exception.backtrace.each { |trace| puts "    #{trace}"}
+      if @verbose
+        exception.backtrace.each { |trace| puts "    #{trace}"}
+      end
     end
     
     def run_tests_in_folder(path)
