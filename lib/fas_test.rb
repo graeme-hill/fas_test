@@ -124,14 +124,15 @@ module FasTest
     end
     
     def get_all_test_method_names(test_class)
-      test_class.instance_methods.find_all { |m| m.start_with?('test__') }
+      test_class.instance_methods.find_all { |m| m.to_s.start_with?('test__') }
     end
     
     def find_test_classes
       classes = []
       Module.constants.each do |constant|
-        if constant.end_with? "Tests"
-          classes << eval(constant)
+        constant_str = constant.to_s
+        if constant_str.end_with? "Tests"
+          classes << eval(constant_str)
         end
       end
       return classes

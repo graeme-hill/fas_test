@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = "fas_test"
-  s.version = "0.1.4"
+  s.version = "0.1.5"
   s.authors = ["Graeme Hill"]
   s.email = "graemekh@gmail.com"
   s.homepage = "https://github.com/graeme-hill/fas_test"

@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sqlite3'
 require 'stringio'
-require 'lib/fas_test'
+require './lib/fas_test'
 
 class FasTestTests < FasTest::TestClass
     
